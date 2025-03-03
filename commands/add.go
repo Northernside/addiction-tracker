@@ -26,7 +26,7 @@ func Add(args []string) error {
 	addiction := Addiction{
 		Name:       name,
 		StreakGoal: streakGoal,
-		StartedAt:  time.Now().Add(-48 * time.Hour),
+		StartedAt:  time.Now(),
 	}
 
 	// save addiction to file
