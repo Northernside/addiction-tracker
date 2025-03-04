@@ -24,37 +24,39 @@ func List(args []string) error {
 		fmt.Printf("Addiction:\t%s\n", addiction.Name)
 		fmt.Printf("Started on:\t%s at %s\n\n", addiction.StartedAt.Format("02.01.2006"), addiction.StartedAt.Format("15:04"))
 
-		fmt.Printf("Streak:\t\t%d 🔥\n", streak)
-		fmt.Printf("Goal:\t\t%d 🔥\n\n", addiction.StreakGoal)
+		if addiction.StreakGoal != -1 {
+			fmt.Printf("Streak:\t\t%d 🔥\n", streak)
+			fmt.Printf("Goal:\t\t%d 🔥\n\n", addiction.StreakGoal)
 
-		// if streak goal is reached, print message to ask the user if they want to increase the streak goal or not
-		if streak >= addiction.StreakGoal {
-			var daysStr = "Day"
-			if streak != 1 {
-				daysStr += "s"
-			}
-
-			fmt.Printf("Streak goal completed! %d/%d %s. Do you want to increase the streak goal? (yes/no)\n", streak, addiction.StreakGoal, daysStr)
-
-			// get input from user
-			var response string
-			fmt.Print("Response (yes/no): ")
-			fmt.Scanln(&response)
-			if strings.ToLower(response) == "yes" {
-				// ask user for new streak goal
-				var newStreakGoalStr string
-
-				fmt.Print("Enter new streak goal: ")
-				fmt.Scanln(&newStreakGoalStr)
-
-				newStreakGoal, err := strconv.Atoi(newStreakGoalStr)
-				if err != nil {
-					return StreakGoalNotANumber
+			// if streak goal is reached, print message to ask the user if they want to increase the streak goal or not
+			if streak >= addiction.StreakGoal {
+				var daysStr = "Day"
+				if streak != 1 {
+					daysStr += "s"
 				}
 
-				// update addiction
-				addiction.StreakGoal = newStreakGoal
-				UpdateAddiction(addiction)
+				fmt.Printf("Streak goal completed! %d/%d %s. Do you want to increase the streak goal? (yes/no)\n", streak, addiction.StreakGoal, daysStr)
+
+				// get input from user
+				var response string
+				fmt.Print("Response (yes/no): ")
+				fmt.Scanln(&response)
+				if strings.ToLower(response) == "yes" {
+					// ask user for new streak goal
+					var newStreakGoalStr string
+
+					fmt.Print("Enter new streak goal: ")
+					fmt.Scanln(&newStreakGoalStr)
+
+					newStreakGoal, err := strconv.Atoi(newStreakGoalStr)
+					if err != nil {
+						return StreakGoalNotANumber
+					}
+
+					// update addiction
+					addiction.StreakGoal = newStreakGoal
+					UpdateAddiction(addiction)
+				}
 			}
 		}
 
@@ -69,6 +71,11 @@ func List(args []string) error {
 
 func progress(streak int, streakGoal int) {
 	const barWidth = 32
+
+	if streakGoal == -1 {
+		// if streak = 0 to 29, print 0/30, if streak = 30 to 59, print 30/60, and so on
+		streakGoal = ((streak / 30) + 1) * 30
+	}
 
 	fullBlocks := (streak * barWidth) / streakGoal
 

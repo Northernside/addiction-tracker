@@ -7,18 +7,24 @@ import (
 )
 
 func Add(args []string) error {
-	if len(args) < 2 {
-		fmt.Println("Usage: add <addiction name> <streak goal>")
+	if len(args) < 1 {
+		fmt.Println("Usage: add <addiction name> (streak goal)")
 		return ErrNotEnoughArgs
 	}
 
 	name := args[0]
-	streakGoalStr := args[1]
 
-	// check if streak goal is a number
-	streakGoal, err := strconv.Atoi(streakGoalStr)
-	if err != nil {
-		return StreakGoalNotANumber
+	var streakGoal int = -1
+	var err error
+
+	if len(args) > 1 {
+		streakGoalStr := args[1]
+
+		// check if streak goal is a number
+		streakGoal, err = strconv.Atoi(streakGoalStr)
+		if err != nil {
+			return StreakGoalNotANumber
+		}
 	}
 
 	addiction := Addiction{
@@ -33,7 +39,12 @@ func Add(args []string) error {
 		return err
 	}
 
-	fmt.Printf("Addiction '%s' added with a streak goal of %d\n", name, streakGoal)
+	fmt.Printf("Added '%s' addiction", name)
+	if streakGoal != -1 {
+		fmt.Printf("with a streak goal of %d", streakGoal)
+	}
+
+	fmt.Println()
 
 	return nil
 }
