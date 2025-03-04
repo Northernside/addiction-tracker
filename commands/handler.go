@@ -22,7 +22,7 @@ type Addiction struct {
 }
 
 var Commands []Command = []Command{}
-var saveFile = "addictions.json"
+var saveFile string = os.Getenv("HOME") + "/.iamsober.json"
 
 func init() {
 	Commands = []Command{
