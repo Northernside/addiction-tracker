@@ -3,10 +3,8 @@ package commands
 import "fmt"
 
 func Remove(args []string) error {
-	// usage: remove <addiction name>
-
 	if len(args) < 1 {
-		fmt.Println("Benutzung: remove <addiction name>")
+		fmt.Println("Usage: remove <addiction name>")
 		return ErrNotEnoughArgs
 	}
 
@@ -16,6 +14,6 @@ func Remove(args []string) error {
 		return err
 	}
 
-	fmt.Printf("Sucht %s wurde entfernt!\n", name)
+	fmt.Printf("Addiction '%s' removed\n", name)
 	return nil
 }

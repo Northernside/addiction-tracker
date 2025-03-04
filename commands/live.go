@@ -7,16 +7,13 @@ import (
 )
 
 func Live(args []string) error {
-	// usage: live
-
-	// load all addictions
 	addictions, err := LoadAddictions()
 	if err != nil {
 		return err
 	}
 
 	if len(addictions) == 0 {
-		fmt.Println("Keine Sucht vorhanden")
+		fmt.Println("No addictions found")
 		return nil
 	}
 
@@ -35,22 +32,22 @@ func Live(args []string) error {
 				streakMinutes := int(duration.Minutes()) % 60
 				streakSeconds := int(duration.Seconds()) % 60
 
-				fmt.Printf("Sucht:\t\t%s\n", addiction.Name)
-				fmt.Printf("Gestartet am:\t%s um %s\n\n", addiction.StartedAt.Format("02.01.2006"), addiction.StartedAt.Format("15:04"))
+				fmt.Printf("Addiction:\t%s\n", addiction.Name)
+				fmt.Printf("Started on:\t%s at %s\n\n", addiction.StartedAt.Format("02.01.2006"), addiction.StartedAt.Format("15:04"))
 
-				var daysStr string = "Tag"
+				var daysStr string = "Day"
 				if streakDays != 1 {
-					daysStr += "e"
+					daysStr += "s"
 				}
 
 				fmt.Printf("Streak:\t\t%d %s 🔥\n", streakDays, daysStr)
-				fmt.Printf("Ziel:\t\t%d %s 🔥\n\n", addiction.StreakGoal, daysStr)
+				fmt.Printf("Goal:\t\t%d %s 🔥\n\n", addiction.StreakGoal, daysStr)
 
 				// print progress bars for days, hours, minutes, and seconds
-				fmt.Printf("Tage:\t\t%s", liveProgress(streakDays, addiction.StreakGoal))
-				fmt.Printf("Stunden:\t%s", liveProgress(streakHours, 24))
-				fmt.Printf("Minuten:\t%s", liveProgress(streakMinutes, 60))
-				fmt.Printf("Sekunden:\t%s", liveProgress(streakSeconds, 60))
+				fmt.Printf("Days:\t\t%s", liveProgress(streakDays, addiction.StreakGoal))
+				fmt.Printf("Hours:\t\t%s", liveProgress(streakHours, 24))
+				fmt.Printf("Minutes:\t%s", liveProgress(streakMinutes, 60))
+				fmt.Printf("Seconds:\t%s", liveProgress(streakSeconds, 60))
 
 				fmt.Printf("\n\n")
 			}

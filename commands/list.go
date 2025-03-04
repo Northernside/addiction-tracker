@@ -8,41 +8,43 @@ import (
 )
 
 func List(args []string) error {
-	// usage: list
-
-	// load all addictions
 	addictions, err := LoadAddictions()
 	if err != nil {
 		return err
 	}
 
 	if len(addictions) == 0 {
-		fmt.Println("Keine Sucht vorhanden")
+		fmt.Println("No addictions found")
 	}
 
 	for _, addiction := range addictions {
 		// calculate the streak correctly
 		streak := int(time.Since(addiction.StartedAt).Hours() / 24)
 
-		fmt.Printf("Sucht:\t\t%s\n", addiction.Name)
-		fmt.Printf("Gestartet am:\t%s um %s\n\n", addiction.StartedAt.Format("02.01.2006"), addiction.StartedAt.Format("15:04"))
+		fmt.Printf("Addiction:\t%s\n", addiction.Name)
+		fmt.Printf("Started on:\t%s at %s\n\n", addiction.StartedAt.Format("02.01.2006"), addiction.StartedAt.Format("15:04"))
 
 		fmt.Printf("Streak:\t\t%d 🔥\n", streak)
-		fmt.Printf("Ziel:\t\t%d 🔥\n\n", addiction.StreakGoal)
+		fmt.Printf("Goal:\t\t%d 🔥\n\n", addiction.StreakGoal)
 
 		// if streak goal is reached, print message to ask the user if they want to increase the streak goal or not
 		if streak >= addiction.StreakGoal {
-			fmt.Printf("Streak Ziel erreicht! %d/%d Tage. Möchtest du den Streak erhöhen?\n", streak, addiction.StreakGoal)
+			var daysStr = "Day"
+			if streak != 1 {
+				daysStr += "s"
+			}
+
+			fmt.Printf("Streak goal completed! %d/%d %s. Do you want to increase the streak goal? (yes/no)\n", streak, addiction.StreakGoal, daysStr)
 
 			// get input from user
 			var response string
-			fmt.Print("Antwort (ja/nein): ")
+			fmt.Print("Response (yes/no): ")
 			fmt.Scanln(&response)
-			if response == "ja" {
+			if strings.ToLower(response) == "yes" {
 				// ask user for new streak goal
 				var newStreakGoalStr string
 
-				fmt.Print("Neues Streak Ziel: ")
+				fmt.Print("Enter new streak goal: ")
 				fmt.Scanln(&newStreakGoalStr)
 
 				newStreakGoal, err := strconv.Atoi(newStreakGoalStr)
@@ -58,6 +60,8 @@ func List(args []string) error {
 
 		// print a progress bar
 		progress(streak, addiction.StreakGoal)
+
+		fmt.Println()
 	}
 
 	return nil
@@ -81,9 +85,9 @@ func progress(streak int, streakGoal int) {
 		emptyBlocks = 0
 	}
 
-	var daysStr = "Tag"
+	var daysStr = "Day"
 	if streak != 1 {
-		daysStr += "e"
+		daysStr += "s"
 	}
 
 	fmt.Printf("[%s%s%s] %d/%d %s\n",

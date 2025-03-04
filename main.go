@@ -1,8 +1,8 @@
 package main
 
 import (
-	"addiction-tracker/commands"
 	"fmt"
+	"iamsober-tui/commands"
 	"os"
 )
 
@@ -19,22 +19,24 @@ func main() {
 
 	for _, cmd := range commands.Commands {
 		for _, key := range cmd.Keys {
-			if key == args[0] {
-				var err error
-				var args []string = []string{}
+			if key != args[0] {
+				continue
+			}
 
-				if len(os.Args) > 2 {
-					args = os.Args[2:]
-				}
+			var err error
+			var args []string = []string{}
 
-				err = cmd.Fn(args)
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
+			if len(os.Args) > 2 {
+				args = os.Args[2:]
+			}
 
+			err = cmd.Fn(args)
+			if err != nil {
+				fmt.Println(err)
 				return
 			}
+
+			return
 		}
 	}
 }

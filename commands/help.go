@@ -4,13 +4,13 @@ import (
 	"fmt"
 )
 
-var ErrNotEnoughArgs = fmt.Errorf("Nicht genügend Argumente")
-var StreakGoalNotANumber = fmt.Errorf("Streak Goal ist kein Integer")
+var ErrNotEnoughArgs = fmt.Errorf("Not enough arguments")
+var StreakGoalNotANumber = fmt.Errorf("Streak goal is not an integer")
 
 func Help(args []string) error {
 	for _, cmd := range Commands {
-		fmt.Printf("Befehl: %s", cmd.Keys[0])
-		fmt.Printf("\nBeschreibung: %s\n\n", cmd.Desc)
+		fmt.Printf("Command: %s", cmd.Keys[0])
+		fmt.Printf("\nDescription: %s\n\n", cmd.Desc)
 	}
 
 	return nil

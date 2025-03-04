@@ -7,10 +7,8 @@ import (
 )
 
 func Add(args []string) error {
-	// usage: add <addiction name> <streak goal>
-
 	if len(args) < 2 {
-		fmt.Println("Benutzung: add <addiction name> <streak goal>")
+		fmt.Println("Usage: add <addiction name> <streak goal>")
 		return ErrNotEnoughArgs
 	}
 
@@ -35,7 +33,7 @@ func Add(args []string) error {
 		return err
 	}
 
-	fmt.Printf("Sucht %s wurde hinzugefügt!\n", name)
+	fmt.Printf("Addiction '%s' added with a streak goal of %d\n", name, streakGoal)
 
 	return nil
 }

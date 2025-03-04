@@ -1,4 +1,4 @@
-module addiction-tracker
+module iamsober-tui
 
 go 1.23.5
 

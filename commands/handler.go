@@ -2,7 +2,9 @@ package commands
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -27,37 +29,37 @@ func init() {
 		{
 			Keys: []string{"help", "h"},
 			Args: []string{},
-			Desc: "Zeigt alle verfügbaren Befehle an",
+			Desc: "Shows all available commands",
 			Fn:   Help,
 		},
 		{
 			Keys: []string{"list", "ls"},
 			Args: []string{},
-			Desc: "Listet alle eingetragene Suchten auf",
+			Desc: "Lists all addictions and their streaks",
 			Fn:   List,
 		},
 		{
 			Keys: []string{"add", "a"},
 			Args: []string{},
-			Desc: "Fügt eine neue Sucht hinzu",
+			Desc: "Adds a new addiction",
 			Fn:   Add,
 		},
 		{
 			Keys: []string{"remove", "rm"},
 			Args: []string{},
-			Desc: "Entfernt eine Sucht",
+			Desc: "Removes an addiction",
 			Fn:   Remove,
 		},
 		{
 			Keys: []string{"reset", "rs"},
 			Args: []string{},
-			Desc: "Setzt den Streak einer Sucht zurück",
+			Desc: "Resets an addiction streak",
 			Fn:   Reset,
 		},
 		{
 			Keys: []string{"live", "lv"},
 			Args: []string{},
-			Desc: "Zeigt alle Suchten live an",
+			Desc: "Displays all addictions and their streaks in real-time with an animated progress bar",
 			Fn:   Live,
 		},
 	}
@@ -85,6 +87,12 @@ func SaveAddiction(addiction Addiction) error {
 		err = json.NewDecoder(file).Decode(&addictions)
 		if err != nil {
 			return err
+		}
+	}
+
+	for _, a := range addictions {
+		if strings.ToLower(addiction.Name) == strings.ToLower(a.Name) {
+			return fmt.Errorf("Addition with name '%s' already exists", addiction.Name)
 		}
 	}
 
@@ -117,7 +125,7 @@ func UpdateAddiction(addiction Addiction) error {
 	}
 
 	for i, a := range addictions {
-		if a.Name == addiction.Name {
+		if strings.ToLower(addiction.Name) == strings.ToLower(a.Name) {
 			addictions[i] = addiction
 			break
 		}
@@ -150,7 +158,7 @@ func ResetAddiction(name string) error {
 	}
 
 	for i, addiction := range addictions {
-		if addiction.Name == name {
+		if strings.ToLower(addiction.Name) == strings.ToLower(name) {
 			addiction.StartedAt = time.Now()
 			addictions[i] = addiction
 			break
@@ -204,7 +212,7 @@ func RemoveAddiction(name string) error {
 	}
 
 	for i, addiction := range addictions {
-		if addiction.Name == name {
+		if strings.ToLower(addiction.Name) == strings.ToLower(name) {
 			addictions = append(addictions[:i], addictions[i+1:]...)
 			break
 		}

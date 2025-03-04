@@ -1,1 +1,1 @@
-# addiction-tracker
+# iamsober-tui

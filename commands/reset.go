@@ -3,10 +3,8 @@ package commands
 import "fmt"
 
 func Reset(args []string) error {
-	// usage: reset <addiction name>
-
 	if len(args) < 1 {
-		fmt.Println("Benutzung: reset <addiction name>")
+		fmt.Println("Usage: reset <addiction name>")
 		return ErrNotEnoughArgs
 	}
 
@@ -16,6 +14,6 @@ func Reset(args []string) error {
 		return err
 	}
 
-	fmt.Printf("Sucht %s wurde zurückgesetzt!\n", name)
+	fmt.Printf("Addiction '%s' reset\n", name)
 	return nil
 }
